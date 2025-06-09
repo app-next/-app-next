@@ -1,141 +1,188 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>APP NEXT – Ventas</title>
-<style>
-:root{--b:#0033A0;--y:#FFD700;--bg:#f5f5f5;--red:#E63946}
-body{font-family:sans-serif;background:var(--bg);margin:0;display:flex;flex-direction:column;min-height:100vh}
-header{background:#000;text-align:center;padding:1rem}header img{height:50px}
-main{flex:1;max-width:900px;margin:1rem auto;background:#fff;padding:1rem;border-radius:8px}
-.btn{padding:.75rem;border:none;border-radius:6px;font-size:1rem;color:#fff;background:var(--b);cursor:pointer;margin:.25rem 0;width:100%}
-.btn:hover{background:var(--y);color:#000}.hidden{display:none}
-form{display:flex;flex-direction:column;gap:.5rem;max-width:600px}
-label{font-size:.9rem;font-weight:600;display:flex;flex-direction:column}
-input,select,textarea{padding:.5rem;border:1px solid #ccc;border-radius:6px}
-input[readonly]{background:#eee}.neg{color:var(--red)}
-table{width:100%;border-collapse:collapse;margin-top:1rem}th,td{border:1px solid #ccc;padding:.5rem;text-align:left}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APP NEXT – Ventas</n  >
+  <style>
+    :root {--b: #0033A0; --y: #FFD700; --bg: #f5f5f5; --red: #E63946;}
+    body { font-family: sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
+    header { background: #000; text-align: center; padding: 1rem; }
+    header img { height: 50px; }
+    main { flex: 1; display: flex; justify-content: center; padding: 1rem; }
+    /* TARJETA BLANCA */
+    .card { background: #fff; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); width: 240px; }
+    .btn { width: 100%; padding: .75rem; margin: .4rem 0; border: none; border-radius: 6px; font-size: 1rem; color: #fff; background: var(--b); cursor: pointer; }
+    .btn:hover { background: var(--y); color: #000; }
+    .hidden { display: none; }
+    form { display: flex; flex-direction: column; gap: .55rem; max-width: 300px; }
+    label { font-size: .85rem; font-weight: 600; display: flex; flex-direction: column; }
+    input, select, textarea { padding: .45rem; border: 1px solid #ccc; border-radius: 6px; font-size: .9rem; }
+    input[readonly] { background: #eee; }
+    .neg { color: var(--red); }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: .8rem; }
+    th, td { border: 1px solid #ccc; padding: .3rem; text-align: left; }
+  </style>
 </head>
 <body>
 <header><img src="logo.png" alt="NEXT"></header>
 <main>
-  <!-- menú principal -->
-  <div id="menuPrin">
-    <button class="btn" data-sec="ventas">⇢ Ventas</button>
+  <!-- MENÚ PRINCIPAL -->
+  <div id="menuPrin" class="card">
+    <button class="btn" data-sec="ventas">Ventas</button>
+    <button class="btn" data-sec="crm">CRM</button>
+    <button class="btn" data-sec="disenos">Diseños</button>
+    <button class="btn" data-sec="stock">Stock</button>
+    <button class="btn" data-sec="compras">Compras</button>
+    <button class="btn" data-sec="finanzas">Finanzas</button>
+    <button class="btn" data-sec="marketing">Marketing</button>
+    <button class="btn" data-sec="agenda">Agenda</button>
   </div>
 
-  <!-- módulo Ventas -->
-  <section id="ventas" class="hidden">
-    <button class="btn" data-sec="menuPrin">← Menú principal</button>
-
-    <h3>Nueva venta</h3>
+  <!-- MÓDULO VENTAS -->
+  <section id="ventas" class="card hidden" style="width: 320px;">
+    <button class="btn" data-sec="menuPrin">← Menú</button>
+    <h3 style="text-align:center; margin:0.5rem 0;">Registrar Venta</h3>
     <form id="fVenta">
+      <label>Fecha <input id="fecha" readonly></label>
       <label>Cliente <input id="cli" list="dlCli" required></label><datalist id="dlCli"></datalist>
       <label>Teléfono <input id="tel" required></label>
       <label>Producto <input id="prod" required></label>
-
-      <label style="display:flex;gap:.5rem">
-        <span style="flex:1">Cant. <input id="cant" type="number" min="1" value="1" required></span>
-        <span style="flex:1">Precio USD <input id="prec" type="number" step="0.01" value="0" required></span>
-        <span style="flex:1">Total USD <input id="tot" readonly></span>
-      </label>
-
-      <label>Tasa BCV (si pagas en Bs) <input id="tasa" type="number" step="0.01" value="1"></label>
-
-      <label>Método pago 1
+      <label>Cantidad <input id="cant" type="number" min="1" value="1" required></label>
+      <label>Precio Unitario USD <input id="prec" type="number" step="0.01" value="0" required></label>
+      <label>Total USD <input id="tot" readonly></label>
+      <label>Método Pago 1
         <select id="met1" required>
           <option value="" disabled selected>— elige —</option>
           <option>Efectivo_$</option><option>BS</option><option>Zinli</option><option>USDT</option>
         </select>
       </label>
-      <label>Monto 1 <input id="mon1" type="number" step="0.01" value="0" required></label>
-
-      <label>Método pago 2
-        <select id="met2"><option value="">Ninguno</option><option>Efectivo_$</option><option>BS</option><option>Zinli</option><option>USDT</option></select>
+      <label>Monto Pago 1 <input id="mon1" type="number" step="0.01" value="0" required></label>
+      <label>Método Pago 2
+        <select id="met2">
+          <option value="">Ninguno</option>
+          <option>Efectivo_$</option><option>BS</option><option>Zinli</option><option>USDT</option>
+        </select>
       </label>
-      <label>Monto 2 <input id="mon2" type="number" step="0.01" value="0"></label>
-
+      <label>Monto Pago 2 <input id="mon2" type="number" step="0.01" value="0"></label>
+      <label>Tasa BCV <input id="tasa" type="number" step="0.01" value="1"></label>
       <label>Abono USD <input id="abn" readonly></label>
       <label>Restante USD <input id="res" readonly></label>
       <div id="nota" class="neg"></div>
-
       <label>Asesor <input id="asesor" required></label>
       <label>Comentarios <textarea id="coment"></textarea></label>
-
       <button class="btn" type="submit">Registrar venta</button>
     </form>
 
-    <h3>Subpaneles</h3>
-    <button class="btn" data-sec="listClientes">Clientes registrados</button>
-    <button class="btn" data-sec="listDeuda">Clientes con deuda</button>
-    <button class="btn" data-sec="listInforme">Informe de ventas</button>
+    <h3 style="text-align:center; margin:0.5rem 0;">Paneles</h3>
+    <button class="btn" data-sec="listClientes">Clientes Registrados</button>
+    <button class="btn" data-sec="listDeuda">Clientes con Deudas</button>
+    <button class="btn" data-sec="listInforme">Informe de Ventas</button>
 
-    <!-- listados -->
     <div id="listClientes" class="hidden"></div>
-    <div id="listDeuda"    class="hidden"></div>
-    <div id="listInforme"  class="hidden"></div>
+    <div id="listDeuda" class="hidden"></div>
+    <div id="listInforme" class="hidden"></div>
   </section>
 </main>
 
 <script>
-/* URL de tu SpreadAPI */ 
-const API='https://script.google.com/macros/s/AKfycbzyZ4XgVMvjZoX6QUYmNKyyIkbnhdVXd-MtfTZOzysWpSXRvH9ZXQE_-OSxGlg--LOK1A/exec';
+// URL de tu SpreadAPI
+const API = 'https://script.google.com/macros/s/AKfycbzyZ4XgVMvjZoX6QUYmNKyyIkbnhdVXd-MtfTZOzysWpSXRvH9ZXQE_-OSxGlg--LOK1A/exec';
 
-/* — navegación — */
-document.querySelectorAll('[data-sec]').forEach(b=>b.onclick=()=>show(b.dataset.sec));
-function show(id){document.querySelectorAll('#menuPrin,#ventas,[id^=list]').forEach(el=>el.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
+// Helpers
+const $ = id => document.getElementById(id);
+const today = () => new Date().toISOString().split('T')[0];
 
-/* — cálculo en formulario — */
-const c=ID('cant'),p=ID('prec'),t=ID('tot'),tb=ID('tasa');
-const m1=ID('met1'),v1=ID('mon1'),m2=ID('met2'),v2=ID('mon2');
-const abn=ID('abn'),res=ID('res'),nota=ID('nota');
-[c,p,tb,m1,v1,m2,v2].forEach(i=>i.oninput=calc);
-function calc(){
-  t.value=(c.value*p.value).toFixed(2);
-  let a=0;if(m1.value)a+=m1.value==='BS'?v1.value/tb.value:+v1.value;
-  if(m2.value)a+=m2.value==='BS'?v2.value/tb.value:+v2.value;
-  abn.value=a.toFixed(2);const r=(t.value-a).toFixed(2);res.value=r;
-  nota.textContent=r<0?'Saldo a favor':'';res.classList.toggle('neg',r<0);
+// Navegación
+[...document.querySelectorAll('[data-sec]')].forEach(btn => btn.onclick = () => {
+  document.querySelectorAll('.card, section[id="ventas"], div[id^="list"]').forEach(el => el.classList.add('hidden'));
+  $(btn.dataset.sec).classList.remove('hidden');
+});
+
+// Referencias
+const fecha = $('fecha'), cant = $('cant'), prec = $('prec'), tot = $('tot'), tasa = $('tasa');
+const met1 = $('met1'), mon1 = $('mon1'), met2 = $('met2'), mon2 = $('mon2');
+const abn = $('abn'), res = $('res'), nota = $('nota');
+
+// Cálculos
+[cant, prec, mon1, mon2, tasa, met1, met2].forEach(el => el.oninput = calcular);
+function calcular() {
+  tot.value = (cant.value * prec.value).toFixed(2);
+  let a = 0;
+  if (met1.value) a += met1.value === 'BS' ? mon1.value / tasa.value : +mon1.value;
+  if (met2.value) a += met2.value === 'BS' ? mon2.value / tasa.value : +mon2.value;
+  abn.value = a.toFixed(2);
+  const r = (tot.value - a).toFixed(2);
+  res.value = r;
+  nota.textContent = r < 0 ? 'Saldo a favor' : '';
+  res.classList.toggle('neg', r < 0);
 }
 
-/* — API call — */
-async function api(obj){
-  const r=await fetch(API,{method:'POST',body:JSON.stringify(obj)});
-  return r.ok? r.json():null;
+// API
+async function api(obj) {
+  const resp = await fetch(API, { method: 'POST', body: JSON.stringify(obj) });
+  return resp.ok ? resp.json() : null;
 }
 
-/* — cargar ventas — */
-let data=[];async function cargar(){
-  data=await api({method:'GET',sheet:'Ventas'})||[];
-  ID('dlCli').innerHTML=[...new Set(data.map(v=>v.cliente))].map(c=>`<option value=\"${c}\">`).join('');
-  render('listClientes',v=>true, v=>[v.cliente,v.telefono]);
-  render('listDeuda',   v=>+v.restante_usd>0, v=>[v.cliente,v.telefono,v.restante_usd]);
-  render('listInforme', ()=>true, v=>[v.fecha,v.cliente,v.producto,v.cantidad,v.total_usd,v.abono_usd,v.restante_usd]);
-}
-function render(id,f,row){
-  const head={listClientes:['Cliente','Teléfono'],
-              listDeuda:['Cliente','Teléfono','Restante'],
-              listInforme:['Fecha','Cliente','Prod.','Cant','Total USD','Abono','Restante']}[id];
-  const rows=data.filter(f).map(row).map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
-  ID(id).innerHTML=`<table><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr>${rows}</table>`;
+// Cargar datos
+let data = [];
+async function cargar() {
+  data = await api({ method: 'GET', sheet: 'Ventas' }) || [];
+  $('dlCli').innerHTML = [...new Set(data.map(v => v.cliente))].map(c => `<option value="${c}">`).join('');
+  render('listClientes', v => true, v => [v.cliente, v.telefono]);
+  render('listDeuda', v => +v.restante_usd > 0, v => [v.cliente, v.telefono, v.restante_usd]);
+  render('listInforme', () => true, v => [v.fecha, v.cliente, v.producto, v.cantidad, v.total_usd, v.abono_usd, v.restante_usd]);
 }
 
-/* — enviar venta — */
-ID('fVenta').onsubmit=async e=>{
+// Renderizar tablas
+function render(id, filterFn, rowFn) {
+  const headers = {
+    listClientes: ['Cliente', 'Teléfono'],
+    listDeuda: ['Cliente', 'Teléfono', 'Restante'],
+    listInforme: ['Fecha', 'Cliente', 'Producto', 'Cant', 'Total', 'Abono', 'Restante']
+  }[id];
+
+  const rows = data.filter(filterFn).map(rowFn).map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('');
+  $(id).innerHTML = `<table><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr>${rows}</table>`;
+}
+
+// Enviar venta
+$('fVenta').onsubmit = async e => {
   e.preventDefault();
-  const pl={fecha:hoy(),cliente:ID('cli').value,telefono:ID('tel').value,producto:ID('prod').value,
-    cantidad:+c.value,precio_unitario:+p.value,total_usd:+t.value,tasa_bcv:+tb.value,
-    metodo_pago_1:m1.value,monto_pago_1:+v1.value,metodo_pago_2:m2.value,monto_pago_2:+v2.value,
-    abono_usd:+abn.value,restante_usd:+res.value,asesor:ID('asesor').value,comentario:ID('coment').value};
-  const ok=await api({method:'POST',sheet:'Ventas',payload:pl});
-  alert(ok?'Guardado':'Error');if(ok){e.target.reset();tb.value=1;calc();cargar();}
+  // Validaciones
+  if ((+mon1.value > 0 && !met1.value) || (+mon2.value > 0 && !met2.value)) {
+    alert('Por favor selecciona el método antes de ingresar el monto'); return;
+  }
+  if ((met1.value && +mon1.value === 0) || (met2.value && +mon2.value === 0)) {
+    alert('Por favor ingresa un monto para cada método seleccionado'); return;
+  }
+
+  const payload = {
+    fecha: $('fecha').value,
+    cliente: $('cli').value,
+    telefono: $('tel').value,
+    producto: $('prod').value,
+    cantidad: +cant.value,
+    precio_unitario: +prec.value,
+    total_usd: +tot.value,
+    metodo_pago_1: met1.value,
+    monto_pago_1: +mon1.value,
+    metodo_pago_2: met2.value,
+    monto_pago_2: +mon2.value,
+    tasa_bcv: +tasa.value,
+    abono_usd: +abn.value,
+    restante_usd: +res.value,
+    asesor: $('asesor').value,
+    comentario: $('coment').value
+  };
+
+  const ok = await api({ method: 'POST', sheet: 'Ventas', payload });
+  alert(ok ? 'Guardado' : 'Error');
+  if (ok) { e.target.reset(); fecha.value = today(); calcular(); cargar(); }
 };
 
-/* — utilidades — */
-function ID(x){return document.getElementById(x);}
-function hoy(){return new Date().toISOString().split('T')[0];}
-
-/* inicio */
-cargar();show('menuPrin');
+// Inicializar
+fecha.value = today(); calcular(); cargar();
 </script>
-</body></html>
+</body>
+</html>
