@@ -4,49 +4,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>APP NEXT</title>
+  <title>Registrar Venta - NEXT</title>
   <style>
     :root {
       --azul: #0033A0;
       --amarillo: #FFD700;
-      --fondo: #f5f5f5;
-      --blanco: #fff;
-      --sombra: 0 2px 8px rgba(0,0,0,0.1);
+      --gris: #f5f5f5;
     }
-    * {box-sizing: border-box; margin: 0; padding: 0;}
-    body {font-family: sans-serif; background: var(--fondo);}
-    header {background: #000; text-align: center; padding: 1rem;}
-    header img {height: 50px;}
-    main {
-      max-width: 600px;
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background: var(--gris);
+      padding: 1rem;
+    }
+    .container {
+      max-width: 480px;
       margin: auto;
+      background: #fff;
       padding: 1rem;
-    }
-    .panel {
-      background: var(--blanco);
-      border-radius: 8px;
-      box-shadow: var(--sombra);
-      padding: 1rem;
-      margin-bottom: 1rem;
-    }
-    button {
-      width: 100%;
-      padding: 0.75rem;
-      font-size: 1rem;
-      background: var(--azul);
-      color: var(--blanco);
-      border: none;
-      border-radius: 6px;
-      margin-bottom: 0.5rem;
-      cursor: pointer;
-    }
-    button:hover {
-      background: var(--amarillo);
-      color: #000;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
     }
     h2 {
       text-align: center;
-      margin-bottom: 1rem;
+      color: var(--azul);
     }
     form {
       display: flex;
@@ -54,164 +35,247 @@
       gap: 0.75rem;
     }
     label {
-      font-weight: bold;
+      font-size: 0.9rem;
+      font-weight: 600;
     }
     input, select, textarea {
+      width: 100%;
       padding: 0.5rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
       font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
     }
     input[readonly] {
       background-color: #eee;
     }
-    .nota {
-      color: red;
-      font-size: 0.9rem;
-      text-align: right;
+    button {
+      background-color: var(--azul);
+      color: #fff;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: var(--amarillo);
+      color: #000;
+    }
+    .row {
+      display: flex;
+      gap: 1rem;
+    }
+    .row > div {
+      flex: 1;
     }
   </style>
 </head>
 <body>
-  <header>
-    <img src="logo.png" alt="NEXT Logo" />
-  </header>
-  <main>
-    <div class="panel">
-      <button onclick="location.href='index.html'">← Volver</button>
-      <h2>Registrar Venta</h2>
-      <form id="formVenta">
-        <label>Fecha<input type="date" id="fecha" required></label>
-        <label>Cliente<input id="cliente" list="clientes" autocomplete="off" required><datalist id="clientes"></datalist></label>
-        <label>Teléfono<input id="telefono" required></label>
-        <label>Producto<input id="producto" required></label>
-        <label>Cantidad<input type="number" id="cantidad" min="1" value="1" required></label>
-        <label>Precio Unitario<input type="number" id="precio" step="0.01" value="0" required></label>
-        <label>Total USD<input id="total" readonly></label>
-        <label>Método Pago 1
-          <select id="metodo1" required>
-            <option value="">— elige —</option>
-            <option>Efectivo $</option>
-            <option>BS</option>
-            <option>Zinli</option>
-            <option>USDT</option>
-          </select>
-        </label>
-        <label>Monto Pago 1<input type="number" id="monto1" value="0" required></label>
-        <label>Método Pago 2
-          <select id="metodo2">
-            <option value="">Ninguno</option>
-            <option>Efectivo $</option>
-            <option>BS</option>
-            <option>Zinli</option>
-            <option>USDT</option>
-          </select>
-        </label>
-        <label>Monto Pago 2<input type="number" id="monto2" value="0"></label>
-        <label>Tasa BCV<input type="number" id="tasa" step="0.01" value="1"></label>
-        <label>Abono USD<input id="abono" readonly></label>
-        <label>Restante USD<input id="restante" readonly></label>
-        <div class="nota" id="nota"></div>
-        <label>Asesor<input id="asesor" required></label>
-        <label>Comentario<textarea id="comentario"></textarea></label>
-        <button type="submit">Registrar</button>
-      </form>
-    </div>
-  </main>
+  <div class="container">
+    <h2>Registrar Venta</h2>
+    <form id="ventaForm">
+      <label>Cliente:
+        <input id="cliente" list="clientesList" required />
+        <datalist id="clientesList"></datalist>
+      </label>
+
+      <label>Teléfono:
+        <input id="telefono" required />
+      </label>
+
+      <label>Producto:
+        <input id="producto" required />
+      </label>
+
+      <div class="row">
+        <div>
+          <label>Cantidad:
+            <input id="cantidad" type="number" min="1" value="1" required />
+          </label>
+        </div>
+        <div>
+          <label>Precio USD:
+            <input id="precio" type="number" step="0.01" required />
+          </label>
+        </div>
+      </div>
+
+      <label>Total USD:
+        <input id="total" readonly />
+      </label>
+
+      <div class="row">
+        <div>
+          <label>Método de Pago 1:
+            <select id="mp1">
+              <option value="">--</option>
+              <option value="Zelle">Zelle</option>
+              <option value="Efectivo USD">Efectivo USD</option>
+              <option value="Pago Móvil">Pago Móvil</option>
+              <option value="Transferencia Bs">Transferencia Bs</option>
+              <option value="Divisas Bs">Divisas Bs</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label>Monto 1:
+            <input id="monto1" type="number" step="0.01" />
+          </label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Método de Pago 2:
+            <select id="mp2">
+              <option value="">--</option>
+              <option value="Zelle">Zelle</option>
+              <option value="Efectivo USD">Efectivo USD</option>
+              <option value="Pago Móvil">Pago Móvil</option>
+              <option value="Transferencia Bs">Transferencia Bs</option>
+              <option value="Divisas Bs">Divisas Bs</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label>Monto 2:
+            <input id="monto2" type="number" step="0.01" />
+          </label>
+        </div>
+      </div>
+
+      <label>Tasa BCV:
+        <input id="tasa" type="number" step="0.01" />
+      </label>
+
+      <label>Abono USD:
+        <input id="abono" readonly />
+      </label>
+
+      <label>Restante USD:
+        <input id="restante" readonly />
+      </label>
+
+      <label>Asesor:
+        <input id="asesor" />
+      </label>
+
+      <label>Comentario:
+        <textarea id="comentario"></textarea>
+      </label>
+
+      <button type="submit">Registrar Venta</button>
+    </form>
+  </div>
 
   <script>
     const API = 'https://script.google.com/macros/s/AKfycbwQ7Rqj5FLEqikqXhDdCphpoY2_2cBPtinbv4nQNGw7n4uqFWcbGsr8KFVcdFEOlydcmQ/exec';
 
-    let clientesData = [];
+    const form = document.getElementById('ventaForm');
+    const cliente = document.getElementById('cliente');
+    const telefono = document.getElementById('telefono');
+    const total = document.getElementById('total');
+    const cantidad = document.getElementById('cantidad');
+    const precio = document.getElementById('precio');
+    const monto1 = document.getElementById('monto1');
+    const monto2 = document.getElementById('monto2');
+    const abono = document.getElementById('abono');
+    const restante = document.getElementById('restante');
+    const mp1 = document.getElementById('mp1');
+    const mp2 = document.getElementById('mp2');
+    const tasa = document.getElementById('tasa');
 
-    document.addEventListener("DOMContentLoaded", () => {
-      calcularTotal();
-      ["cantidad", "precio", "monto1", "monto2", "tasa", "metodo1", "metodo2"].forEach(id => {
-        document.getElementById(id).addEventListener("input", calcularTotal);
-      });
-      document.getElementById("cliente").addEventListener("input", autocompletarTelefono);
-      cargarClientes();
-    });
+    [cantidad, precio].forEach(el =>
+      el.addEventListener('input', () => {
+        total.value = (cantidad.value * precio.value).toFixed(2);
+        actualizarRestante();
+      })
+    );
+
+    [monto1, monto2, tasa, mp1, mp2].forEach(el =>
+      el.addEventListener('input', actualizarRestante)
+    );
 
     async function cargarClientes() {
       const res = await fetch(API, {
-        method: "POST",
-        body: JSON.stringify({ method: "GET", sheet: "Ventas" }),
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ method: 'GET', sheet: 'Ventas' })
       });
       const data = await res.json();
-      clientesData = data;
-      const nombres = [...new Set(data.map(r => r.cliente))];
-      document.getElementById("clientes").innerHTML = nombres.map(n => `<option value="${n}">`).join("");
+      const lista = [...new Set(data.map(v => v.cliente))];
+      const dl = document.getElementById('clientesList');
+      dl.innerHTML = lista.map(c => `<option value="${c}">`).join('');
     }
 
-    function autocompletarTelefono() {
-      const nombre = document.getElementById("cliente").value;
-      const found = clientesData.find(c => c.cliente === nombre);
-      if (found) document.getElementById("telefono").value = found.telefono || "";
+    cliente.addEventListener('change', async () => {
+      const nombre = cliente.value;
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ method: 'GET', sheet: 'Ventas' })
+      });
+      const data = await res.json();
+      const match = data.find(v => v.cliente === nombre);
+      if (match) telefono.value = match.telefono;
+    });
+
+    function actualizarRestante() {
+      const m1 = parseFloat(monto1.value) || 0;
+      const m2 = parseFloat(monto2.value) || 0;
+      const t = parseFloat(total.value) || 0;
+      abono.value = (m1 + m2).toFixed(2);
+      restante.value = (t - m1 - m2).toFixed(2);
     }
 
-    function calcularTotal() {
-      const cant = parseFloat(document.getElementById("cantidad").value) || 0;
-      const precio = parseFloat(document.getElementById("precio").value) || 0;
-      const tasa = parseFloat(document.getElementById("tasa").value) || 1;
-      const total = cant * precio;
-      document.getElementById("total").value = total.toFixed(2);
-
-      const m1 = parseFloat(document.getElementById("monto1").value) || 0;
-      const m2 = parseFloat(document.getElementById("monto2").value) || 0;
-      const metodo1 = document.getElementById("metodo1").value;
-      const metodo2 = document.getElementById("metodo2").value;
-
-      let abono = 0;
-      if (metodo1 === "BS") abono += m1 / tasa; else abono += m1;
-      if (metodo2 === "BS") abono += m2 / tasa; else abono += m2;
-
-      const restante = total - abono;
-      document.getElementById("abono").value = abono.toFixed(2);
-      document.getElementById("restante").value = restante.toFixed(2);
-      document.getElementById("nota").textContent = restante < 0 ? "Saldo a favor" : "";
-    }
-
-    document.getElementById("formVenta").addEventListener("submit", async function (e) {
+    form.onsubmit = async (e) => {
       e.preventDefault();
-      const metodo1 = document.getElementById("metodo1").value;
-      const metodo2 = document.getElementById("metodo2").value;
-      if ((!metodo1 && parseFloat(document.getElementById("monto1").value) > 0) || (!metodo2 && parseFloat(document.getElementById("monto2").value) > 0)) {
-        alert("Si colocas un monto debes seleccionar el método.");
+      if ((monto1.value && !mp1.value) || (monto2.value && !mp2.value)) {
+        alert("Si hay monto, debes seleccionar método de pago");
         return;
       }
-      const data = {
-        fecha: document.getElementById("fecha").value,
-        cliente: document.getElementById("cliente").value,
-        telefono: document.getElementById("telefono").value,
-        producto: document.getElementById("producto").value,
-        cantidad: document.getElementById("cantidad").value,
-        precio_unitario: document.getElementById("precio").value,
-        total_usd: document.getElementById("total").value,
-        metodo_pago_1: metodo1,
-        monto_pago_1: document.getElementById("monto1").value,
-        metodo_pago_2: metodo2,
-        monto_pago_2: document.getElementById("monto2").value,
-        tasa_bcv: document.getElementById("tasa").value,
-        abono_usd: document.getElementById("abono").value,
-        restante_usd: document.getElementById("restante").value,
-        asesor: document.getElementById("asesor").value,
-        comentario: document.getElementById("comentario").value,
-      };
-      const res = await fetch(API, {
-        method: "POST",
-        body: JSON.stringify({ method: "POST", sheet: "Ventas", payload: data }),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (res.ok) {
-        alert("Venta registrada.");
-        this.reset();
-        calcularTotal();
-      } else {
-        alert("Error al guardar.");
+      if ((mp1.value.includes('Bs') && !tasa.value) || (mp2.value.includes('Bs') && !tasa.value)) {
+        alert("Si se usa Bs, debes colocar tasa BCV");
+        return;
       }
-    });
+
+      const payload = {
+        fecha: new Date().toISOString().split('T')[0],
+        cliente: cliente.value,
+        telefono: telefono.value,
+        producto: document.getElementById('producto').value,
+        cantidad: cantidad.value,
+        precio_unitario: precio.value,
+        total_usd: total.value,
+        metodo_pago_1: mp1.value,
+        monto_pago_1: monto1.value,
+        metodo_pago_2: mp2.value,
+        monto_pago_2: monto2.value,
+        tasa_bcv: tasa.value,
+        abono_usd: abono.value,
+        restante_usd: restante.value,
+        asesor: document.getElementById('asesor').value,
+        comentario: document.getElementById('comentario').value
+      };
+
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ method: 'POST', sheet: 'Ventas', payload })
+      });
+
+      if (res.ok) {
+        alert("Venta registrada correctamente");
+        form.reset();
+        abono.value = "";
+        restante.value = "";
+        total.value = "";
+      } else {
+        alert("Error al registrar venta");
+      }
+    };
+
+    cargarClientes();
   </script>
 </body>
 </html>
