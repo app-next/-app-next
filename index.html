@@ -1,158 +1,126 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APP NEXT</title>
   <style>
     :root {--primary:#0033A0;--accent:#FFD700;--background:#f5f5f5;--error:#E63946;}
-    *,*:before,*:after {box-sizing:border-box;margin:0;padding:0;}
-    body {font-family:sans-serif;background:var(--background);display:flex;flex-direction:column;min-height:100vh;}
-    header {background:#000;text-align:center;padding:1rem;}
-    header img {height:50px;}
-    main {flex:1;display:flex;justify-content:center;padding:1rem;}
-    .card {background:#fff;padding:1rem;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.1);width:280px;}
-    .btn {width:100%;padding:.75rem;margin:.5rem 0;border:none;border-radius:6px;background:var(--primary);color:#fff;font-size:1rem;cursor:pointer;}
-    .btn:hover {background:var(--accent);color:#000;}
-    .hidden, .hidden-panel {display:none !important;}
-    form {display:flex;flex-direction:column;gap:.5rem;}
-    label {font-size:.9rem;font-weight:600;display:flex;flex-direction:column;}
-    input, select, textarea {padding:.5rem;border:1px solid #ccc;border-radius:6px;font-size:.9rem;}
-    input[readonly] {background:#eee;}
-    .error {color:var(--error);font-size:.8rem;}
-    table {width:100%;border-collapse:collapse;margin-top:1rem;font-size:.8rem;}
-    th, td {border:1px solid #ccc;padding:.3rem;text-align:left;}
+    body { margin:0; font-family:sans-serif; background:var(--background); }
+    header { background:#000; text-align:center; padding:1rem; }
+    header img { height:50px; }
+    main { display:flex; min-height: calc(100vh - 72px); }
+    aside { width:240px; background:#fff; box-shadow:2px 0 6px rgba(0,0,0,0.1); }
+    aside ul { list-style:none; padding:1rem; margin:0; }
+    aside li { margin:0.5rem 0; }
+    .btn { width:100%; padding:0.75rem; border:none; border-radius:6px; background:var(--primary); color:#fff; font-size:1rem; cursor:pointer; }
+    .btn:hover { background:var(--accent); color:#000; }
+    section.content { flex:1; padding:1rem; }
+    .card { background:#fff; padding:1rem; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); max-width:600px; margin:auto; }
+    form { display:flex; flex-direction:column; gap:0.5rem; }
+    label { font-size:0.9rem; font-weight:600; display:flex; flex-direction:column; }
+    input, select, textarea { padding:0.5rem; border:1px solid #ccc; border-radius:6px; font-size:0.9rem; }
+    input[readonly] { background:#eee; }
+    .error { color:var(--error); font-size:0.8rem; }
+    table { width:100%; border-collapse:collapse; margin-top:1rem; }
+    th, td { border:1px solid #ccc; padding:0.3rem; text-align:left; font-size:0.85rem; }
+    .hidden { display:none; }
   </style>
 </head>
 <body>
 <header><img src="logo.png" alt="NEXT Logo"></header>
 <main>
-  <!-- Menú Principal -->
-  <div id="menuPrin" class="card">
-    <button class="btn" data-menu="ventasMenu">Ventas</button>
-    <button class="btn" data-menu="finanzasMenu">Finanzas</button>
-    <button class="btn" data-menu="rrssMenu">RRSS</button>
-    <button class="btn" data-menu="fichasMenu">Fichas Técnicas</button>
-    <button class="btn" data-menu="ideasMenu">Ideas</button>
-    <button class="btn" data-menu="agendaMenu">Agenda</button>
-  </div>
-  <!-- Submenús -->
-  <div id="ventasMenu" class="card hidden">
-    <button class="btn" data-sec="regVenta">Registrar venta</button>
-    <button class="btn" data-sec="clientesDeuda">Clientes con deuda</button>
-    <button class="btn" data-sec="clientesReg">Clientes registrados</button>
-    <button class="btn" data-sec="informeVentas">Informe de ventas</button>
-    <button class="btn" data-menu="menuPrin">← Volver</button>
-  </div>
-  <div id="finanzasMenu" class="card hidden"><!-- placeholder --><button class="btn" data-menu="menuPrin">← Volver</button></div>
-  <div id="rrssMenu" class="card hidden"><button class="btn" data-menu="menuPrin">← Volver</button></div>
-  <div id="fichasMenu" class="card hidden"><button class="btn" data-menu="menuPrin">← Volver</button></div>
-  <div id="ideasMenu" class="card hidden"><button class="btn" data-menu="menuPrin">← Volver</button></div>
-  <div id="agendaMenu" class="card hidden"><button class="btn" data-menu="menuPrin">← Volver</button></div>
+  <aside>
+    <ul>
+      <li><button class="btn" data-panel="panelReg">Registrar Venta</button></li>
+      <li><button class="btn" data-panel="panelDeuda">Clientes con Deuda</button></li>
+      <li><button class="btn" data-panel="panelRegis">Clientes Registrados</button></li>
+      <li><button class="btn" data-panel="panelInforme">Informe de Ventas</button></li>
+    </ul>
+  </aside>
+  <section class="content">
+    <div id="panelReg" class="card">
+      <h3>Registrar Venta</h3>
+      <form id="formVenta">
+        <label>Fecha<input id="fecha" readonly></label>
+        <label>Cliente<input id="cli" list="dlCli" required><datalist id="dlCli"></datalist></label>
+        <label>Teléfono<input id="tel" required></label>
+        <label>Producto<input id="prod" required></label>
+        <label>Cantidad<input id="cant" type="number" min="1" value="1" required></label>
+        <label>Precio Unitario<input id="prec" type="number" step="0.01" value="0" required></label>
+        <label>Total USD<input id="tot" readonly></label>
+        <label>Método Pago 1<select id="met1" required><option value="" disabled selected>— elige —</option><option>Efectivo_$</option><option>BS</option><option>Zinli</option><option>USDT</option></select></label>
+        <label>Monto Pago 1<input id="mon1" type="number" step="0.01" value="0" required></label>
+        <label>Método Pago 2<select id="met2"><option value="">Ninguno</option><option>Efectivo_$</option><option>BS</option><option>Zinli</option><option>USDT</option></select></label>
+        <label>Monto Pago 2<input id="mon2" type="number" step="0.01" value="0"></label>
+        <label>Tasa BCV<input id="tasa" type="number" step="0.01" value="1"></label>
+        <label>Abono USD<input id="abn" readonly></label>
+        <label>Restante USD<input id="res" readonly></label>
+        <div id="nota" class="error"></div>
+        <label>Asesor<input id="asesor" required></label>
+        <label>Comentarios<textarea id="coment"></textarea></label>
+        <button class="btn" type="submit">Guardar Venta</button>
+      </form>
+    </div>
+
+    <div id="panelDeuda" class="card hidden">
+      <h3>Clientes con Deuda</h3>
+      <div id="tablaDeuda"></div>
+    </div>
+
+    <div id="panelRegis" class="card hidden">
+      <h3>Clientes Registrados</h3>
+      <div id="tablaRegis"></div>
+    </div>
+
+    <div id="panelInforme" class="card hidden">
+      <h3>Informe de Ventas</h3>
+      <label>Buscar mes<input id="mesBuscar" type="month"></label>
+      <div id="tablaInforme"></div>
+    </div>
+  </section>
 </main>
-<!-- Secciones Ventas -->
-<section class="card" id="regVenta" class="hidden-panel hidden">
-  <button class="btn" data-sec="ventasMenu">← Ventas</button>
-  <h3 style="text-align:center;">Registrar Venta</h3>
-  <form id="fVenta">
-    <label>Fecha<input id="fecha" readonly></label>
-    <label>Cliente<input id="cli" list="dlCli" required></label><datalist id="dlCli"></datalist>
-    <label>Teléfono<input id="tel" required></label>
-    <label>Producto<input id="prod" required></label>
-    <label>Cantidad<input id="cant" type="number" min="1" value="1" required></label>
-    <label>Precio Unitario<input id="prec" type="number" step="0.01" value="0" required></label>
-    <label>Total USD<input id="tot" readonly></label>
-    <label>Método Pago 1<select id="met1" required><option value="" disabled selected>— elige —</option><option>Efectivo_$</option><option>BS</option><option>Zinli</option><option>USDT</option></select></label>
-    <label>Monto Pago 1<input id="mon1" type="number" step="0.01" value="0" required></label>
-    <label>Método Pago 2<select id="met2"><option value="">Ninguno</option><option>Efectivo_$</option><option>BS</option><option>Zinli</option><option>USDT</option></select></label>
-    <label>Monto Pago 2<input id="mon2" type="number" step="0.01" value="0"></label>
-    <label>Tasa BCV<input id="tasa" type="number" step="0.01" value="1"></label>
-    <label>Abono USD<input id="abn" readonly></label>
-    <label>Restante USD<input id="res" readonly></label>
-    <div id="nota" class="error"></div>
-    <label>Asesor<input id="asesor" required></label>
-    <label>Comentarios<textarea id="coment"></textarea></label>
-    <button class="btn" type="submit">Guardar venta</button>
-  </form>
-</section>
-<section class="card hidden-panel hidden" id="clientesDeuda">
-  <button class="btn" data-sec="ventasMenu">← Ventas</button>
-  <h3>Clientes con Deuda</h3><div id="tablaDeuda"></div>
-</section>
-<section class="card hidden-panel hidden" id="clientesReg">
-  <button class="btn" data-sec="ventasMenu">← Ventas</button>
-  <h3>Clientes Registrados</h3><div id="tablaReg"></div>
-</section>
-<section class="card hidden-panel hidden" id="informeVentas">
-  <button class="btn" data-sec="ventasMenu">← Ventas</button>
-  <h3>Informe de Ventas</h3>
-  <label>Mes<input id="mesBuscar" type="month"></label>
-  <div id="tablaInf"></div>
-</section>
+
 <script>
 const API='https://script.google.com/macros/s/AKfycbzyZ4XgVMvjZoX6QUYmNKyyIkbnhdVXd-MtfTZOzysWpSXRvH9ZXQE_-OSxGlg--LOK1A/exec';
 const $=id=>document.getElementById(id);
 const today=()=>new Date().toISOString().split('T')[0];
 
-// Menú principal y submenús
-document.querySelectorAll('[data-menu]').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('[data-menu], .sub').forEach(el=>el.classList.add('hidden'));
-  document.getElementById(b.dataset.menu).classList.remove('hidden');
-});
-// Navegación subpaneles
-document.querySelectorAll('[data-sec]').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('section').forEach(sec=>sec.classList.add('hidden'));
-  document.getElementById(b.dataset.sec).classList.remove('hidden');
+/* Navegación Paneles */
+[...document.querySelectorAll('aside button')].forEach(b=>b.onclick=()=>{
+  ['panelReg','panelDeuda','panelRegis','panelInforme'].forEach(id=>$ (id).classList.add('hidden'));
+  $(b.dataset.panel).classList.remove('hidden');
 });
 
-// Form references
+/* Cálculos Form */
 const fecha=$('fecha'), cant=$('cant'), prec=$('prec'), tot=$('tot'), tasa=$('tasa');
 const met1=$('met1'), mon1=$('mon1'), met2=$('met2'), mon2=$('mon2');
 const abn=$('abn'), res=$('res'), nota=$('nota');
-
-// Calculate
 [cant,prec,mon1,mon2,tasa,met1,met2].forEach(el=>el.oninput=calc);
-function calc(){
-  fecha.value=today();
-  tot.value=(cant.value*prec.value).toFixed(2);
-  let a=0; if(met1.value) a+=met1.value==='BS'?mon1.value/tasa.value:+mon1.value;
-  if(met2.value) a+=met2.value==='BS'?mon2.value/tasa.value:+mon2.value;
-  abn.value=a.toFixed(2);
-  const r=(tot.value-a).toFixed(2);
-  res.value=r;
+function calc(){fecha.value=today(); tot.value=(cant.value*prec.value).toFixed(2);
+  let a=0; if(met1.value)a+=met1.value==='BS'?mon1.value/tasa.value:+mon1.value;
+  if(met2.value)a+=met2.value==='BS'?mon2.value/tasa.value:+mon2.value;
+  abn.value=a.toFixed(2); const r=(tot.value-a).toFixed(2); res.value=r;
   nota.textContent=r<0?'Saldo a favor':'';
 }
 
-// API fetch
-async function api(obj){const resp=await fetch(API,{method:'POST',body:JSON.stringify(obj)});return resp.ok?resp.json():null;}
+/* API Helper */
+async function api(obj){const resp=await fetch(API,{method:'POST',body:JSON.stringify(obj)});return resp.ok?resp.json():[];}
 
-// Load data
+/* Cargar Datos */
 let data=[];
-async function cargar(){
-  data=await api({method:'GET',sheet:'Ventas'})||[];
+async function cargar(){data=await api({method:'GET',sheet:'Ventas'})||[];
   $('dlCli').innerHTML=[...new Set(data.map(v=>v.cliente))].map(c=>`<option value="${c}">`).join('');
-  render('tablaDeuda',v=>+v.restante_usd>0,v=>`<tr><td>${v.cliente}</td><td>${v.telefono}</td><td>${v.restante_usd}</td></tr>`,'<th>Cliente</th><th>Teléfono</th><th>Restante</th>');
-  render('tablaReg',() => true,v=>`<tr><td>${v.cliente}</td><td>${v.telefono}</td></tr>`,'<th>Cliente</th><th>Teléfono</th>');
-  render('tablaInf',() => !$('mesBuscar').value||v.fecha.startsWith($('mesBuscar').value),v=>`<tr><td>${v.fecha}</td><td>${v.cliente}</td><td>${v.producto}</td><td>${v.cantidad}</td><td>${v.total_usd}</td><td>${v.abono_usd}</td><td>${v.restante_usd}</td></tr>`,'<th>Fecha</th><th>Cliente</th><th>Producto</th><th>Cant</th><th>Total USD</th><th>Abono USD</th><th>Restante USD</th>');
+  $('tablaDeuda').innerHTML=renderTable(data.filter(v=>+v.restante_usd>0),['Cliente','Teléfono','Restante'],v=>[v.cliente,v.telefono,v.restante_usd]);
+  $('tablaRegis').innerHTML=renderTable([...new Set(data.map(v=>v.cliente))].map(c=>({cliente:c,telefono:data.find(v=>v.cliente===c).telefono})),['Cliente','Teléfono'],v=>[v.cliente,v.telefono]);
+  $('tablaInforme').innerHTML=renderTable(data.filter(v=>!$('mesBuscar').value||v.fecha.startsWith($('mesBuscar').value)),['Fecha','Cliente','Producto','Cantidad','Total USD','Abono USD','Restante USD'],v=>[v.fecha,v.cliente,v.producto,v.cantidad,v.total_usd,v.abono_usd,v.restante_usd]);
 }
-function render(id,filter,row,head){
-  const body=data.filter(filter).map(row).join('');
-  $(id).innerHTML=`<table><tr>${head}</tr>${body}</table>`;
-}
+function renderTable(rows,headers,fn){return `<table><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr>${rows.map(fn).map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table>`;}
 
-document.querySelector('[data-sec="informeVentas"] #mesBuscar').onchange=cargar;
-
-// Submit form
-$('fVenta').onsubmit=async e=>{
-  e.preventDefault();
-  if((+mon1.value>0&&!met1.value)||(+mon2.value>0&&!met2.value)){alert('Selecciona método para cada monto');return;}
-  if((met1.value&&+mon1.value===0)||(met2.value&&+mon2.value===0)){alert('Ingresa monto para cada método');return;}
-  const pl={fecha:$('fecha').value,cliente:$('cli').value,telefono:$('tel').value,producto:$('prod').value,cantidad:+cant.value,precio_unitario:+prec.value,total_usd:+tot.value,metodo_pago_1:met1.value,monto_pago_1:+mon1.value,metodo_pago_2:met2.value,monto_pago_2:+mon2.value,tasa_bcv:+tasa.value,abono_usd:+abn.value,restante_usd:+res.value,asesor:$('asesor').value,comentario:$('coment').value};
-  const ok=await api({method:'POST',sheet:'Ventas',payload:pl});
-  alert(ok?'Guardado':'Error');if(ok){$('fVenta').reset();$('tasa').value=1;calc();cargar();show('listClientes');}
-};
-
-// Init
+/* Form Submit */
+$('fVenta').onsubmit=async e=>{e.preventDefault();if((mon1.value>0&&!met1.value)||(mon2.value>0&&!met2.value)){alert('Selecciona método para cada monto');return;}const payload={fecha:$('fecha').value,cliente:$('cli').value,telefono:$('tel').value,producto:$('prod').value,cantidad:+cant.value,precio_unitario:+prec.value,total_usd:+tot.value,metodo_pago_1:met1.value,monto_pago_1:+mon1.value,metodo_pago_2:met2.value,monto_pago_2:+mon2.value,tasa_bcv:+tasa.value,abono_usd:+abn.value,restante_usd:+res.value,asesor:$('asesor').value,comentario:$('coment').value};const ok=await api({method:'POST',sheet:'Ventas',payload});alert(ok?'Guardado':'Error');if(ok){$('fVenta').reset();tasa.value=1;calc(); cargar();$('panelReg').classList.add('hidden');}}
+$('mesBuscar').onchange=cargar;
+// Initialize
 calc();cargar();
 </script>
 </body>
